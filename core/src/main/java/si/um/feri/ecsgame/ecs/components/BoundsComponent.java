@@ -1,0 +1,8 @@
+package si.um.feri.ecsgame.ecs.components;
+
+import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.math.Rectangle;
+
+public class BoundsComponent implements Component {
+    public final Rectangle rect = new Rectangle();
+}
