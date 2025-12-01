@@ -7,20 +7,25 @@ import si.um.feri.ecsgame.ecs.components.PositionComponent;
 import si.um.feri.ecsgame.ecs.components.TextureComponent;
 import si.um.feri.ecsgame.ecs.components.ZOrderComponent;
 import si.um.feri.ecsgame.ecs.util.Mappers;
-
+import si.um.feri.ecsgame.ecs.components.GlitchComponent;
 import java.util.Comparator;
 
 public class RenderingSystem extends SortedIteratingSystem {
+
     private final SpriteBatch batch;
 
+    private final ComponentMapper<GlitchComponent> glitchMapper = ComponentMapper.getFor(GlitchComponent.class);
+
+
     public RenderingSystem(SpriteBatch batch) {
-        super(Family.all(PositionComponent.class, TextureComponent.class).get(),
+        super(Family.all(PositionComponent.class, TextureComponent.class, ZOrderComponent.class).get(),
             Comparator.comparingInt(e -> {
                 ZOrderComponent z = Mappers.z.get(e);
-                return z == null ? 0 : z.z;
+                return z.z;
             }));
         this.batch = batch;
     }
+
 
     @Override
     public void update(float dt) {
@@ -30,9 +35,16 @@ public class RenderingSystem extends SortedIteratingSystem {
     }
 
     @Override
-    protected void processEntity(Entity e, float dt) {
-        PositionComponent p = Mappers.position.get(e);
-        TextureComponent t = Mappers.texture.get(e);
+    protected void processEntity(Entity entity, float dt) {
+        GlitchComponent glitch = glitchMapper.get(entity);
+
+        if (glitch != null && glitch.timeRemaining > 0) {
+            return;
+        }
+
+        PositionComponent p = Mappers.position.get(entity);
+        TextureComponent t = Mappers.texture.get(entity);
+
         batch.draw(t.region, p.x, p.y, t.width, t.height);
     }
 }

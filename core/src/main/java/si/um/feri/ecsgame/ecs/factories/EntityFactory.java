@@ -76,6 +76,7 @@ public class EntityFactory {
         e.add(p); e.add(v); e.add(t); e.add(b);
         e.add(h); e.add(m); e.add(s); e.add(sc);
         e.add(new PlayerComponent());
+        e.add(new GlitchComponent());
 
         ZOrderComponent z = new ZOrderComponent();
         z.z = 10;
@@ -103,7 +104,7 @@ public class EntityFactory {
         b.rect.set(x, y, t.width, t.height);
 
         ItemComponent item = new ItemComponent();
-        item.type = 0; // crystal
+        item.type = 0;
 
         e.add(p); e.add(v); e.add(t); e.add(b);
         e.add(item);
@@ -134,7 +135,7 @@ public class EntityFactory {
         b.rect.set(x, y, t.width, t.height);
 
         ItemComponent item = new ItemComponent();
-        item.type = 1; // potion
+        item.type = 1;
 
         e.add(p); e.add(v); e.add(t); e.add(b);
         e.add(item);
@@ -165,7 +166,7 @@ public class EntityFactory {
         b.rect.set(x, y, t.width, t.height);
 
         ItemComponent item = new ItemComponent();
-        item.type = 2; // shield
+        item.type = 2;
 
         e.add(p); e.add(v); e.add(t); e.add(b);
         e.add(item);
@@ -207,7 +208,6 @@ public class EntityFactory {
     }
 
     public Entity createFireball(float x, float y) {
-        // projektil
         Entity proj = new Entity();
 
         PositionComponent p = new PositionComponent();
@@ -233,12 +233,11 @@ public class EntityFactory {
 
         engine.addEntity(proj);
 
-        // trail, sledi projektilu (FollowComponent)
         Entity trail = new Entity();
 
         ParticleComponent pc = new ParticleComponent();
         pc.pool = fireballTrailPool;
-        pc.attachedToEntity = false; // sledi prek FollowComponent
+        pc.attachedToEntity = false;
         trail.add(pc);
 
         FollowComponent follow = new FollowComponent();
@@ -257,7 +256,6 @@ public class EntityFactory {
 
         engine.addEntity(trail);
 
-        // shoot sound
         Sound shoot = assets.get(AssetPaths.SND_SHOOT, Sound.class);
         shoot.play();
 

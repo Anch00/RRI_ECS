@@ -54,6 +54,9 @@ public class GameScreen extends ScreenAdapter implements GameStateSystem.Resetta
         engine.addSystem(new RenderingSystem(batch));
         engine.addSystem(new HudSystem(batch, assets));
 
+        //glitch
+        engine.addSystem(new GlitchSystem());
+
         factory.createBackground();
         factory.createPlayer(Constants.WORLD_WIDTH / 2f - 32f, 20f);
 
